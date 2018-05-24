@@ -19,4 +19,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::group([   
+        'middleware' => 'auth',
+        'prefix' => 'teams'  
+    ], function ($router) {
+        Route::post('/create', 'HomeController@teamCreate')->name('createTeam');
+        Route::get('/create', 'HomeController@teamCreateView')->name('team');
+        Route::get('/', 'HomeController@index')->name('teams');
+    });

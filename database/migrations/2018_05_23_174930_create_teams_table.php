@@ -16,7 +16,7 @@ class CreateTeamsTable extends Migration
         Schema::create('teams', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->integer('yearFrom');
+            $table->integer('yearFrom')->nullable();
             $table->integer('yearUntil');
             $table->unsignedInteger('coach_id');
             $table->timestamps();
