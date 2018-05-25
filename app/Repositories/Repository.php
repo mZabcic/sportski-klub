@@ -33,6 +33,8 @@ class Repository implements RepositoryInterface
         return $record->update($data);
     }
 
+  
+
     // remove record from the database
     public function delete($id)
     {

@@ -4,22 +4,22 @@ namespace App\Http\Controllers;
 use App\Repositories\Repository;
 use App\Team;
 use App\User;
-
+use App\Player;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class PlayersController extends Controller
 {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    protected $teamRepo;
+    protected $playerRepo;
     protected $usersRepo;
 
-    public function __construct(Team $team, User $user)
+    public function __construct(Player $player, User $user)
     {
-        $this->teamRepo = new Repository($team);
+        $this->playerRepo = new Repository($player);
         $this->usersRepo = new Repository($user);
         $this->middleware('auth');
     }
@@ -31,8 +31,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $teams = $this->teamRepo->all()->with('coach')->sortable()->paginate(10);
-        return view('home', ['teams' => $teams]);
+        $players = $this->playerRepo->all()->with('position')->sortable()->paginate(10);
+        return view('players.index', ['players' => $players]);
     }
 
 

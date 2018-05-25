@@ -26,6 +26,22 @@ Route::group([
         'prefix' => 'teams'  
     ], function ($router) {
         Route::post('/create', 'HomeController@teamCreate')->name('createTeam');
-        Route::get('/create', 'HomeController@teamCreateView')->name('team');
+        Route::post('/edit/{id}', 'HomeController@teamEdit')->name('editTeam');
+        Route::delete('/delete/{id}', 'HomeController@teamDelete')->name('teamDelete');
+        Route::get('/create', 'HomeController@teamCreateView');
         Route::get('/', 'HomeController@index')->name('teams');
+        Route::get('/{id}', 'HomeController@teamEditView');
+    });
+
+
+Route::group([   
+        'middleware' => 'auth',
+        'prefix' => 'players'  
+], function ($router) {
+        Route::post('/create', 'HomeController@teamCreate')->name('createTeam');
+        Route::post('/edit/{id}', 'HomeController@teamEdit')->name('editTeam');
+        Route::delete('/delete/{id}', 'HomeController@teamDelete')->name('teamDelete');
+        Route::get('/create', 'HomeController@teamCreateView');
+        Route::get('/', 'PlayersController@index')->name('players');
+        Route::get('/{id}', 'HomeController@teamEditView');
     });

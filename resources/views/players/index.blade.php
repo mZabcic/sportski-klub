@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header" style="display: flex; justify-content: space-between;">
                  <div>Ekipe </div>
-                    <a href="{{ url('/teams/create') }}" class="button-success pure-button">Nova ekipa</a>
+                    <a href="{{ url('/teams/create') }}" class="button-success pure-button">Novi igrač</a>
                 </div>
 
                 <div class="card-body">
@@ -23,10 +23,10 @@
                     <table style="width: 100%" class="pure-table pure-table-bordered">
                         <thead>
                             <tr>
-                                <th>@sortablelink('name', 'Naziv')</th>
-                                <th>@sortablelink('coach.last_name', 'Trener')</th>
-                                <th>@sortablelink('yearFrom', 'Godište od')</th>
-                                <th>@sortablelink('yearUntil', 'Godište do')</th>
+                                <th>@sortablelink('first_name', 'Ime')</th>
+                                <th>@sortablelink('last_name', 'Prezime')</th>
+                                <th>@sortablelink('position.name', 'Pozicija')</th>
+                                <th>@sortablelink('date_of_birth', 'Godište do')</th>
                                 <th>@sortablelink('created_at', 'Datum kreiranja')</th>
                                 <th>@sortablelink('updated_at', 'Datum izmjene')</th>
                                 <th></th>
@@ -34,21 +34,21 @@
                         </thead>
 
                         <tbody>
-                        @foreach ($teams as $team)
+                        @foreach ($players as $player)
                             <tr>
-                                <td>{{ $team->name }}</td>
-                                <td>{{ $team->coach->last_name }} {{ $team->coach->first_name }}</td>
-                                <td>{{ $team->yearFrom }}</td>
-                                <td>{{ $team->yearUntil }}</td>
-                                <td>{{ $team->created_at }}</td>
-                                <td>{{ $team->updated_at }}</td>
-                                <td style="    text-align: center;"><a href="/teams/{{ $team->id }}" class="button-success pure-button">Uredi</a></td>
+                                <td>{{ $player->first_name }}</td>
+                                <td>{{ $player->last_name }}</td>
+                                <td>{{ $player->position->name }} </td>
+                                <td>{{ $player->date_of_birth }}</td>
+                                <td>{{ $player->created_at }}</td>
+                                <td>{{ $player->updated_at }}</td>
+                                <td style="    text-align: center;"><a href="/teams/{{ $player->id }}" class="button-success pure-button">Uredi</a></td>
                             </tr>
                         @endforeach
                         </tbody>
                        
                     </table>
-                    <div style="margin-top: 16px; display: flex; justify-content: center;  "> {{ $teams->links() }}</div>                    
+                    <div style="margin-top: 16px; display: flex; justify-content: center;  "> {{ $players->links() }}</div>                    
                 </div>
             </div>
         </div>
