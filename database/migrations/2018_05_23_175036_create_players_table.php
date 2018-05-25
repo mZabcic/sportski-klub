@@ -19,7 +19,7 @@ class CreatePlayersTable extends Migration
             $table->string('last_name');
             $table->date('date_of_birth');
             $table->unsignedInteger('position_id');
-            $table->unsignedInteger('team_id');
+            $table->unsignedInteger('team_id')->nullable();
             $table->timestamps();
 
             $table->foreign('position_id')->references('id')->on('positions');

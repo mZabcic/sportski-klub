@@ -5,6 +5,7 @@ use App\Repositories\Repository;
 use App\Team;
 use App\User;
 use App\Player;
+use App\Position;
 use Illuminate\Http\Request;
 
 class PlayersController extends Controller
@@ -15,12 +16,15 @@ class PlayersController extends Controller
      * @return void
      */
     protected $playerRepo;
-    protected $usersRepo;
+    protected $teamRepo;
+    protected $positionRepo;
 
-    public function __construct(Player $player, User $user)
+
+    public function __construct(Player $player, Team $team, Position $position)
     {
         $this->playerRepo = new Repository($player);
-        $this->usersRepo = new Repository($user);
+        $this->teamRepo = new Repository($team);
+        $this->positionRepo = new Repository($position);
         $this->middleware('auth');
     }
 
@@ -41,10 +45,11 @@ class PlayersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function teamCreateView()
+    public function createView()
     {
-        $users = $this->usersRepo->all()->where('role_id', '=', 3)->get();
-        return view('team', ['coaches' => $users]);
+        $teams = $this->teamRepo->all()->get();
+        $positions = $this->positionRepo->all()->get();
+        return view('players.create', ['teams' => $teams, 'positions' => $positions]);
     }
 
 

@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header" style="display: flex; justify-content: space-between;">
                  <div>Ekipe </div>
-                    <a href="{{ url('/teams/create') }}" class="button-success pure-button">Novi igrač</a>
+                    <a href="{{ url('/players/create') }}" class="button-success pure-button">Novi igrač</a>
                 </div>
 
                 <div class="card-body">
