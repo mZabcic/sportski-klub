@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Repositories\Repository;
 use App\Team;
 use App\User;
+use App\Player;
 
 use Illuminate\Http\Request;
 
@@ -16,11 +17,13 @@ class HomeController extends Controller
      */
     protected $teamRepo;
     protected $usersRepo;
+    protected $playerRepo;
 
-    public function __construct(Team $team, User $user)
+    public function __construct(Team $team, User $user, Player $player)
     {
         $this->teamRepo = new Repository($team);
         $this->usersRepo = new Repository($user);
+        $this->playerRepo = new Repository($player);
         $this->middleware('auth');
     }
 
@@ -57,7 +60,8 @@ class HomeController extends Controller
     {
         $users = $this->usersRepo->all()->where('role_id', '=', 3)->get();
         $team = $this->teamRepo->show($id);
-        return view('teamEdit', ['coaches' => $users, 'team' => $team ]);
+        $players = $this->playerRepo->all()->where('team_id', $id)->sortable()->paginate(10);
+        return view('teamEdit', ['coaches' => $users, 'team' => $team , 'players' => $players]);
     }
 
 
@@ -72,7 +76,7 @@ class HomeController extends Controller
     public function teamCreate(Request $request)
     {
         $data = $request;
-        $team = Team::create([
+        $team = $this->teamRepo->create([
             'name' => $data['name'],
             'yearFrom' => $data['yearFrom'],
             'yearUntil' => $data['yearUntil'],

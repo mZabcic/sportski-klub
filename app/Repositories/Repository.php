@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Carbon\Carbon;
 
 class Repository implements RepositoryInterface
 {
@@ -23,12 +24,14 @@ class Repository implements RepositoryInterface
     // create a new record in the database
     public function create(array $data)
     {
+        $data['created_at'] = Carbon::now();
         return $this->model->create($data);
     }
 
     // update record in the database
     public function update(array $data, $id)
     {
+        $data['updated_at'] = Carbon::now();
         $record = $this->find($id);
         return $record->update($data);
     }

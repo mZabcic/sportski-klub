@@ -42,7 +42,15 @@
                                 <td>{{ $team->yearUntil }}</td>
                                 <td>{{ $team->created_at }}</td>
                                 <td>{{ $team->updated_at }}</td>
-                                <td style="    text-align: center;"><a href="/teams/{{ $team->id }}" class="button-success pure-button">Uredi</a></td>
+                                <td style="display:flex; justify-content: space-between; text-align: center;"><a href="/teams/{{ $team->id }}" class="button-success pure-button">Uredi</a>
+                                <form action="{{ route('teamDelete', ['id' => $team->id]) }}" method="post">
+                                @csrf
+                                 <input type="hidden" name="_method" value="delete" />
+                                 <button type="submit" class="button-error pure-button">
+                                    {{ __('Obriši') }}
+                                </button>
+                           </form>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>

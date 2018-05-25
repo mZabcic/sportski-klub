@@ -7,6 +7,7 @@ use App\User;
 use App\Player;
 use App\Position;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class PlayersController extends Controller
 {
@@ -41,7 +42,7 @@ class PlayersController extends Controller
 
 
       /**
-     * Show team create form.
+     * Show player create form.
      *
      * @return \Illuminate\Http\Response
      */
@@ -54,15 +55,18 @@ class PlayersController extends Controller
 
 
      /**
-     * Show team edit form.
+     * Show player edit form.
      *
      * @return \Illuminate\Http\Response
      */
-    public function teamEditView($id)
+    public function editView($id)
     {
-        $users = $this->usersRepo->all()->where('role_id', '=', 3)->get();
-        $team = $this->teamRepo->show($id);
-        return view('teamEdit', ['coaches' => $users, 'team' => $team ]);
+        $player = $this->playerRepo->show($id);
+        $teams = $this->teamRepo->all()->get();
+        $positions = $this->positionRepo->all()->get();
+        if (is_null($player->team_id))
+           $player->team_id = 0;
+        return view('players.edit', ['player' => $player, 'teams' => $teams, 'positions' => $positions]);
     }
 
 
@@ -74,35 +78,43 @@ class PlayersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function teamCreate(Request $request)
+    public function createMethod(Request $request)
     {
         $data = $request;
-        $team = Team::create([
-            'name' => $data['name'],
-            'yearFrom' => $data['yearFrom'],
-            'yearUntil' => $data['yearUntil'],
-            'coach_id' => $data['coach_id']
+        if ($data['team_id'] == 0) {
+            $data['team_id'] = null;
+        }
+        $player = $this->playerRepo->create([
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'date_of_birth' => $data['date_of_birth'],
+            'position_id' => $data['position_id'],
+            'team_id' => $data['team_id']
         ]);
-        return redirect('teams');
+        return redirect('players');
     }
 
       /**
-     * Put method for editing team
+     * Post method for editing team
      *
      * @return \Illuminate\Http\Response
      */
-    public function teamEdit($id, Request $request)
+    public function edit($id, Request $request)
     {
         $data = $request;
-        $team = $this->teamRepo->show($id);
-        $team->update([
-            'name' => $data['name'],
-            'yearFrom' => $data['yearFrom'],
-            'yearUntil' => $data['yearUntil'],
-            'coach_id' => $data['coach_id']
+        if ($data['team_id'] == 0) {
+            $data['team_id'] = null;
+        }
+        $player = $this->playerRepo->show($id);
+        $player->update([
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'date_of_birth' => $data['date_of_birth'],
+            'position_id' => $data['position_id'],
+            'team_id' => $data['team_id']
         ], [$id]);
 
-        return redirect('teams');
+        return redirect('players');
     }
 
        /**
@@ -110,10 +122,10 @@ class PlayersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function teamDelete($id)
+    public function delete($id)
     {
-        $data = $this->teamRepo->delete($id);
-        return redirect('teams');
+        $data = $this->playerRepo->delete($id);
+        return redirect('players');
     }
 
 

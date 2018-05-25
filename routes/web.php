@@ -38,10 +38,10 @@ Route::group([
         'middleware' => 'auth',
         'prefix' => 'players'  
 ], function ($router) {
-        Route::post('/create', 'PlayersController@create')->name('createPlayer');
-        Route::post('/edit/{id}', 'HomeController@teamEdit')->name('editTeam');
-        Route::delete('/delete/{id}', 'HomeController@teamDelete')->name('teamDelete');
+        Route::post('/create', 'PlayersController@createMethod')->name('createPlayer');
+        Route::put('/edit/{id}', 'PlayersController@edit')->name('editPlayer');
+        Route::delete('/delete/{id}', 'PlayersController@delete')->name('playerDelete');
         Route::get('/create', 'PlayersController@createView');
         Route::get('/', 'PlayersController@index')->name('players');
-        Route::get('/{id}', 'HomeController@teamEditView');
+        Route::get('/{id}', 'PlayersController@editView');
     });

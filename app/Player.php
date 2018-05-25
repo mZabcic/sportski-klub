@@ -20,12 +20,12 @@ class Player extends Model
 
     public function team()
     {
-        return $this->hasOne('App\Team', 'team_id');
+        return $this->hasOne('App\Team', 'id', 'team_id');
     }
 
     public function position()
     {
-        return $this->hasOne('App\Position', 'position_id');
+        return $this->hasOne('App\Position', 'id', 'position_id');
     }
 
 }
