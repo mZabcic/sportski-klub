@@ -18,7 +18,7 @@
                             <label for="first_name" class="col-md-4 col-form-label text-md-right">{{ __('Ime') }}</label>
 
                             <div class="col-md-6">
-                                <input id="first_name" type="text" class="form-control{{ $errors->has('first_name') ? ' is-invalid' : '' }}" name="ime" value="{{ old('first_name') }}" required autofocus>
+                                <input id="first_name" type="text" class="form-control{{ $errors->has('first_name') ? ' is-invalid' : '' }}" name="first_name" value="{{ old('first_name') }}" required autofocus>
 
                                 @if ($errors->has('first_name'))
                                     <span class="invalid-feedback">
@@ -61,12 +61,21 @@
                             <label for="position_id" class="col-md-4 col-form-label text-md-right">{{ __('Pozicija') }}</label>
 
                             <div class="col-md-6">
-                                <select id="position_id" class="form-control" name="position_id" required>
+                                <select id="position_id" class="form-control{{ $errors->has('position_id') ? ' is-invalid' : '' }}" name="position_id" required>
                                         <option value="0">-- Odaberi poziciju --</option>
                                     @foreach ($positions as $position)
-                                            <option value="{{ $position->id}}">{{ $position->name }}</option>
+                                    @if (old('position_od') == $position->id)
+                                            <option selected value="{{ $position->id}}">{{ $position->name }}</option>
+                                    @else
+                                             <option value="{{ $position->id}}">{{ $position->name }}</option>
+                                    @endif
                                     @endforeach
                                 </select>
+                                @if ($errors->has('position_id'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('position_id') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
 
@@ -75,12 +84,21 @@
                             <label for="team_id" class="col-md-4 col-form-label text-md-right">{{ __('Ekipa') }}</label>
 
                             <div class="col-md-6">
-                                <select id="team_id" class="form-control" name="team_id">
+                                <select id="team_id" class="form-control{{ $errors->has('team_id') ? ' is-invalid' : '' }}" name="team_id">
                                             <option value="0">-- Odaberi ekipu --</option>
                                     @foreach ($teams as $team)
+                                    @if (old('team_id') == $team->id)
+                                            <option selected value="{{ $team->id}}">{{ $team->name }}</option>
+                                    @else
                                             <option value="{{ $team->id}}">{{ $team->name }}</option>
+                                    @endif
                                     @endforeach
                                 </select>
+                                @if ($errors->has('team_id'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('team_id') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
 

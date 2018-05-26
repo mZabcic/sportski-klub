@@ -62,10 +62,14 @@
                             <label for="coach_id" class="col-md-4 col-form-label text-md-right">{{ __('Trener') }}</label>
 
                             <div class="col-md-6">
-                                <select id="coach_id" class="form-control" name="coach_id">
+                                <select id="coach_id" class="form-control{{ $errors->has('coach_id') ? ' is-invalid' : '' }}" name="coach_id">
                                              <option value="0">-- Odaberite trenera --</option>
                                     @foreach ($coaches as $coach)
-                                            <option value="{{ $coach->id}}">{{ $coach->first_name }} {{ $coach->last_name }}</option>
+                                    @if (old('coach_id') == $coach->id)
+                                            <option selected value="{{ $coach->id}}">{{ $coach->first_name }} {{ $coach->last_name }}</option>
+                                    @else
+                                        <option value="{{ $coach->id}}">{{ $coach->first_name }} {{ $coach->last_name }}</option> 
+                                    @endif
                                     @endforeach
                                 </select>
                                 @if ($errors->has('coach_id'))
@@ -75,7 +79,6 @@
                                 @endif
                             </div>
                         </div>
-
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="button-success pure-button">
@@ -89,4 +92,5 @@
         </div>
     </div>
 </div>
+
 @endsection

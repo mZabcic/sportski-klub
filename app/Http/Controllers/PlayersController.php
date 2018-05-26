@@ -8,6 +8,7 @@ use App\Player;
 use App\Position;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\BusinessLogic\PlayerLogic;
 
 class PlayersController extends Controller
 {
@@ -74,7 +75,7 @@ class PlayersController extends Controller
 
 
       /**
-     * Post method for creating team
+     * Post method for creating player
      *
      * @return \Illuminate\Http\Response
      */
@@ -84,6 +85,7 @@ class PlayersController extends Controller
         if ($data['team_id'] == 0) {
             $data['team_id'] = null;
         }
+        PlayerLogic::validator($request->all(), $data['date_of_birth']);
         $player = $this->playerRepo->create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
@@ -106,6 +108,7 @@ class PlayersController extends Controller
         if ($data['team_id'] == 0) {
             $data['team_id'] = null;
         }
+        PlayerLogic::validator($request->all(), $data['date_of_birth']);
         $player = $this->playerRepo->show($id);
         $player->update([
             'first_name' => $data['first_name'],

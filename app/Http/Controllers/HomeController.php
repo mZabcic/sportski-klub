@@ -66,8 +66,10 @@ class HomeController extends Controller
         $users = $this->usersRepo->all()->where('role_id', '=', 3)->get();
         $team = $this->teamRepo->show($id);
         $players = $this->playerRepo->all()->where('team_id', $id)->sortable()->paginate(10);
-        $add_players = $this->playerRepo->all()->where('team_id', null)->get();
+        $add_players = $this->playerRepo->all()->where('team_id', null)->where('date_of_birth', '>=', is_null($team->yearFrom) ? 0 : $team->yearFrom)->where('date_of_birth', '<=', $team->yearUntil)->get();
         $positions = $this->positionRepo->all()->get();
+        if (is_null($team->coach_id))
+             $team->coach_id = 0;
         return view('teamEdit', ['coaches' => $users, 'team' => $team , 'players' => $players, 'selectPlayers' =>  $add_players, 'positions' => $positions]);
     }
 
@@ -82,7 +84,7 @@ class HomeController extends Controller
      */
     public function teamCreate(Request $request)
     {
-        TeamLogic::validator($request->all());
+        TeamLogic::validator($request->all(), null);
         $data = $request;
         $team = $this->teamRepo->create([
             'name' => $data['name'],
@@ -100,6 +102,7 @@ class HomeController extends Controller
      */
     public function teamEdit($id, Request $request)
     {
+        TeamLogic::validator($request->all(), $id);
         $data = $request;
         $team = $this->teamRepo->show($id);
         $team->update([

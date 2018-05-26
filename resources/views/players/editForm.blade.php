@@ -47,41 +47,49 @@
 
                         
                         <div class="form-group row">
-                            <label for="position_id" class="col-md-4 col-form-label text-md-right">{{ __('Pozicija') }}</label>
+                        <label for="position_id" class="col-md-4 col-form-label text-md-right">{{ __('Pozicija') }}</label>
 
-                            <div class="col-md-6">
-                                <select id="position_id" class="form-control" name="position_id" value="{{ $player->position_id }}" required>
-                                    @foreach ($positions as $position)
-                                    @if ($player->position_id === $position->id) 
-                                        <option selected value="{{ $position->id}}" >{{ $position->name }}</option>
-                                    @else
-                                        <option value="{{ $position->id}}">{{ $position->name }}</option>
-                                    @endif
-                                    @endforeach
-                                </select>
-                            </div>
+                        <div class="col-md-6">
+                            <select id="position_id" class="form-control{{ $errors->has('position_id') ? ' is-invalid' : '' }}" name="position_id" required>
+                                    <option value="0">-- Odaberi poziciju --</option>
+                                @foreach ($positions as $position)
+                                @if ($player->position_id == $position->id)
+                                        <option selected value="{{ $position->id}}">{{ $position->name }}</option>
+                                @else
+                                         <option value="{{ $position->id}}">{{ $position->name }}</option>
+                                @endif
+                                @endforeach
+                            </select>
+                            @if ($errors->has('position_id'))
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('position_id') }}</strong>
+                                </span>
+                            @endif
                         </div>
+                    </div>
 
-                        <div class="form-group row">
-                            <label for="team_id" class="col-md-4 col-form-label text-md-right">{{ __('Pozicija') }}</label>
+                    
+                    <div class="form-group row">
+                        <label for="team_id" class="col-md-4 col-form-label text-md-right">{{ __('Ekipa') }}</label>
 
-                            <div class="col-md-6">
-                                <select id="team_id" class="form-control" name="team_id" value="{{ $player->team_id }}">
-                                    @foreach ($teams as $team)
-                                    @if ($player->team_id == $team->id) 
-                                        <option selected value="{{ $team->id}}" >{{ $team->name }}</option>
-                                    @else
-                                        <option value="{{ $team->id}}">{{ $team->name }}</option>
-                                    @endif
-                                    @endforeach
-                                    @if ($player->team_id != 0)
-                                        <option value="0"  >-- Odaberite ekipu --</option> 
-                                    @else
-                                        <option value="0"  selected>-- Odaberite ekipu --</option>  
-                                    @endif
-                                </select>
-                            </div>
+                        <div class="col-md-6">
+                            <select id="team_id" class="form-control{{ $errors->has('team_id') ? ' is-invalid' : '' }}" name="team_id">
+                                        <option value="0">-- Odaberi ekipu --</option>
+                                @foreach ($teams as $team)
+                                @if ($player->team_id == $team->id)
+                                        <option selected value="{{ $team->id}}">{{ $team->name }} ({{  Carbon\Carbon::parse($team->yearFrom)->format('Y') }} - {{  Carbon\Carbon::parse($team->yearUntil)->format('Y') }}) </option>
+                                @else
+                                        <option value="{{ $team->id}}">{{ $team->name }} ({{  Carbon\Carbon::parse($team->yearFrom)->format('Y') }} - {{  Carbon\Carbon::parse($team->yearUntil)->format('Y') }})</option>
+                                @endif
+                                @endforeach
+                            </select>
+                            @if ($errors->has('team_id'))
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('team_id') }}</strong>
+                                </span>
+                            @endif
                         </div>
+                    </div>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-2 offset-md-4">

@@ -62,6 +62,7 @@
 
                             <div class="col-md-6">
                                 <select id="coach_id" class="form-control" name="coach_id" value="{{ $team->coach_id }}" required>
+                                      
                                     @foreach ($coaches as $coach)
                                     @if ($team->coach_id === $coach->id) 
                                         <option selected value="{{ $coach->id}}" >{{ $coach->first_name }} {{ $coach->last_name }}</option>
@@ -69,6 +70,11 @@
                                         <option value="{{ $coach->id}}">{{ $coach->first_name }} {{ $coach->last_name }}</option>
                                     @endif
                                     @endforeach
+                                    @if ($team->coach_id != 0)
+                                        <option value="0"  >-- Odaberite ekipu --</option> 
+                                    @else
+                                        <option value="0"  selected>-- Odaberite ekipu --</option>  
+                                    @endif
                                 </select>
                             </div>
                         </div>
@@ -113,7 +119,12 @@
                         </div>
                     @endif
                 
-                   
+                    @if ($errors->has('team_id'))
+                                    <div style="cursor: pointer" class="alert alert-warning" role="alert" data-toggle="modal" 
+                        data-target="#createModal">
+                                       {{ $errors->first('team_id') }} 
+                                    </div>
+                    @endif 
 
                     
                     <table style="width: 100%" class="pure-table pure-table-bordered">
@@ -274,7 +285,7 @@
                             <label for="position_id" class="col-md-4 col-form-label text-md-right">{{ __('Igrač (Godište)') }}</label>
 
                             <div class="col-md-6">
-                                <select id="player_id" class="form-control" name="player_id"  required>
+                                <select id="player_id" class="form-control" name="player_id" >
                                     @foreach ($selectPlayers as $player)
                                       <option value="{{ $player->id }}">{{ $player->first_name }} {{ $player->last_name }} ({{  Carbon\Carbon::parse($player->date_of_birth)->format('Y') }})</option>
                                     @endforeach
@@ -296,4 +307,5 @@
     </div>
   </div>
 </div>
+
 @endsection
