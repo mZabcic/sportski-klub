@@ -5,6 +5,9 @@ use App\Repositories\Repository;
 use App\Team;
 use App\User;
 use App\Player;
+use App\Position;
+use App\BusinessLogic\TeamLogic;
+
 
 use Illuminate\Http\Request;
 
@@ -18,12 +21,14 @@ class HomeController extends Controller
     protected $teamRepo;
     protected $usersRepo;
     protected $playerRepo;
+    protected $positionRepo;
 
-    public function __construct(Team $team, User $user, Player $player)
+    public function __construct(Team $team, User $user, Player $player, Position $position)
     {
         $this->teamRepo = new Repository($team);
         $this->usersRepo = new Repository($user);
         $this->playerRepo = new Repository($player);
+        $this->positionRepo = new Repository($position);
         $this->middleware('auth');
     }
 
@@ -61,7 +66,9 @@ class HomeController extends Controller
         $users = $this->usersRepo->all()->where('role_id', '=', 3)->get();
         $team = $this->teamRepo->show($id);
         $players = $this->playerRepo->all()->where('team_id', $id)->sortable()->paginate(10);
-        return view('teamEdit', ['coaches' => $users, 'team' => $team , 'players' => $players]);
+        $add_players = $this->playerRepo->all()->where('team_id', null)->get();
+        $positions = $this->positionRepo->all()->get();
+        return view('teamEdit', ['coaches' => $users, 'team' => $team , 'players' => $players, 'selectPlayers' =>  $add_players, 'positions' => $positions]);
     }
 
 
@@ -75,6 +82,7 @@ class HomeController extends Controller
      */
     public function teamCreate(Request $request)
     {
+        TeamLogic::validator($request->all());
         $data = $request;
         $team = $this->teamRepo->create([
             'name' => $data['name'],
@@ -114,6 +122,15 @@ class HomeController extends Controller
         $data = $this->teamRepo->delete($id);
         return redirect('teams');
     }
+
+    public function add($id, Request $request)
+    {
+      $data = $request;
+      $player = $this->playerRepo->show($data['player_id']);
+      $player->team_id = $id;
+      $player->save();
+      return redirect('teams/' . $id);
+    }    
 
 
 }

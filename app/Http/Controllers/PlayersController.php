@@ -91,7 +91,7 @@ class PlayersController extends Controller
             'position_id' => $data['position_id'],
             'team_id' => $data['team_id']
         ]);
-        return redirect('players');
+        return redirect($data['redirect']);
     }
 
       /**
@@ -102,6 +102,7 @@ class PlayersController extends Controller
     public function edit($id, Request $request)
     {
         $data = $request;
+        
         if ($data['team_id'] == 0) {
             $data['team_id'] = null;
         }
@@ -126,6 +127,20 @@ class PlayersController extends Controller
     {
         $data = $this->playerRepo->delete($id);
         return redirect('players');
+    }
+
+         /**
+     * Delete method for deleting team
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function kick($id)
+    {
+        $data = $this->playerRepo->show($id);
+        $team_id = $data->team_id;
+        $data->team_id = null;
+        $data->save();
+        return redirect('teams/' .  $team_id);
     }
 
 

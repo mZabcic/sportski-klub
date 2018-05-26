@@ -62,11 +62,17 @@
                             <label for="coach_id" class="col-md-4 col-form-label text-md-right">{{ __('Trener') }}</label>
 
                             <div class="col-md-6">
-                                <select id="coach_id" class="form-control" name="coach_id" required>
+                                <select id="coach_id" class="form-control" name="coach_id">
+                                             <option value="0">-- Odaberite trenera --</option>
                                     @foreach ($coaches as $coach)
                                             <option value="{{ $coach->id}}">{{ $coach->first_name }} {{ $coach->last_name }}</option>
                                     @endforeach
                                 </select>
+                                @if ($errors->has('coach_id'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('coach_id') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
 
