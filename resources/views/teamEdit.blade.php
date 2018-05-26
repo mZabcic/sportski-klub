@@ -7,6 +7,18 @@
             <div class="card">
             <div class="card-header" style="display: flex; justify-content: space-between;">
             <div>{{ $team->name }} </div>
+            <form method="POST" action="{{ route('navigateBack') }}">
+                        @csrf
+                        <input id="id" value="{{$team->id}}" name="id" type="hidden">
+                        <button type="submit" 
+           class="pure-button pure-button-primary"><i class="fas fa-angle-left"></i></button>
+            </form>
+            <form method="POST" action="{{ route('navigateForward') }}">
+                        @csrf
+                        <input id="id" value="{{$team->id}}" name="id" type="hidden">
+                        <button type="submit" 
+           class="pure-button pure-button-primary"><i class="fas fa-angle-right"></i></button>
+            </form>
                <a href="{{ url('/teams') }}" class="pure-button pure-button-primary">Nazad</a>
            </div>
                 <div class="card-body">

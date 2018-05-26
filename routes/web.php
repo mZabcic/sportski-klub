@@ -27,6 +27,8 @@ Route::group([
     ], function ($router) {
         Route::post('/create', 'HomeController@teamCreate')->name('createTeam');
         Route::post('/edit/{id}', 'HomeController@teamEdit')->name('editTeam');
+        Route::post('/forward', 'HomeController@forward')->name('navigateForward');
+        Route::post('/back', 'HomeController@back')->name('navigateBack');
         Route::delete('/delete/{id}', 'HomeController@teamDelete')->name('teamDelete');
         Route::get('/create', 'HomeController@teamCreateView');
         Route::get('/', 'HomeController@index')->name('teams');

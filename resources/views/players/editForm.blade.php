@@ -77,9 +77,9 @@
                                         <option value="0">-- Odaberi ekipu --</option>
                                 @foreach ($teams as $team)
                                 @if ($player->team_id == $team->id)
-                                        <option selected value="{{ $team->id}}">{{ $team->name }} ({{  Carbon\Carbon::parse($team->yearFrom)->format('Y') }} - {{  Carbon\Carbon::parse($team->yearUntil)->format('Y') }}) </option>
+                                        <option selected value="{{ $team->id}}">{{ $team->name }}  </option>
                                 @else
-                                        <option value="{{ $team->id}}">{{ $team->name }} ({{  Carbon\Carbon::parse($team->yearFrom)->format('Y') }} - {{  Carbon\Carbon::parse($team->yearUntil)->format('Y') }})</option>
+                                        <option value="{{ $team->id}}">{{ $team->name }} </option>
                                 @endif
                                 @endforeach
                             </select>

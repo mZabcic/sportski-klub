@@ -135,5 +135,47 @@ class HomeController extends Controller
       return redirect('teams/' . $id);
     }    
 
+    public function forward(Request $request) {
+        $teams = $this->teamRepo->all()->orderBy('id', 'ASC')->get();
+        $currentId = $request['id'];
+        $flag = false;
+        $newId = 0;
+        foreach ($teams as $team) {
+           if ($team->id == $currentId) {
+               $flag = true; 
+               continue;              
+           }
+           if ($flag) {
+               $newId = $team->id;
+               break;
+           }
+        }
+        if ($newId == 0) {
+            $newId = $teams[0]->id;
+        }
+        return redirect('teams/' . $newId);
+    }
+
+    public function back(Request $request) {
+        $teams = $this->teamRepo->all()->orderBy('id', 'DESC')->get();
+        $currentId = $request['id'];
+        $flag = false;
+        $newId = 0;
+        foreach ($teams as $team) {
+           if ($team->id == $currentId) {
+               $flag = true; 
+               continue;              
+           }
+           if ($flag) {
+               $newId = $team->id;
+               break;
+           }
+        }
+        if ($newId == 0) {
+            $newId = $teams[0]->id;
+        }
+        return redirect('teams/' . $newId);
+    }
+
 
 }
