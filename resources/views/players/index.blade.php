@@ -27,7 +27,7 @@
                                 <th>@sortablelink('last_name', 'Prezime')</th>
                                 <th>@sortablelink('position.name', 'Pozicija')</th>
                                 <th>@sortablelink('team.name', 'Ekipa')</th>
-                                <th>@sortablelink('date_of_birth', 'Godište do')</th>
+                                <th>@sortablelink('date_of_birth', 'Datum rođenja')</th>
                                 <th>@sortablelink('created_at', 'Datum kreiranja')</th>
                                 <th>@sortablelink('updated_at', 'Datum izmjene')</th>
                                 <th></th>

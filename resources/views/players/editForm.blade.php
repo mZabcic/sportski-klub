@@ -70,7 +70,7 @@
 
                     
                     <div class="form-group row">
-                        <label for="team_id" class="col-md-4 col-form-label text-md-right">{{ __('Ekipa') }}</label>
+                        <label for="team_id" class="col-md-4 col-form-label text-md-right">{{ __('Ekipa') }} <span style="font-size: 11px;">(Opcionalno)</span></label>
 
                         <div class="col-md-6">
                             <select id="team_id" class="form-control{{ $errors->has('team_id') ? ' is-invalid' : '' }}" name="team_id">

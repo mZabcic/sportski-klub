@@ -3,6 +3,7 @@
 namespace App\BusinessLogic;
 use App\Rules\RequiredSelectList;
 use App\Rules\Year;
+use App\Rules\Category;
 use \Validator;
 use Illuminate\Validation\Rule;
 
@@ -28,6 +29,15 @@ class TeamLogic
         
         
         return Validator::make($input, $rules, $messages)->validate();
+    }
+
+    public static function validatorAddPlayer($from, $until, $birthday)
+    {
+        if (is_null($from))
+          $from = 0;
+        if ($from <= $birthday && $until >= $birthday)
+          return false;
+        else return true;
     }
 
 }

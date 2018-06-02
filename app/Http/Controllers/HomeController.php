@@ -7,6 +7,9 @@ use App\User;
 use App\Player;
 use App\Position;
 use App\BusinessLogic\TeamLogic;
+use Carbon\Carbon;
+use Workflow;
+
 
 
 use Illuminate\Http\Request;
@@ -40,7 +43,8 @@ class HomeController extends Controller
     public function index()
     {
         $teams = $this->teamRepo->all()->with('coach')->sortable()->paginate(10);
-        return view('home', ['teams' => $teams]);
+        $workflow = Workflow::get($teams[0]);
+        return view('home', ['teams' => $teams, 'wf' => $workflow]);
     }
 
 
@@ -66,11 +70,17 @@ class HomeController extends Controller
         $users = $this->usersRepo->all()->where('role_id', '=', 3)->get();
         $team = $this->teamRepo->show($id);
         $players = $this->playerRepo->all()->where('team_id', $id)->sortable()->paginate(10);
-        $add_players = $this->playerRepo->all()->where('team_id', null)->where('date_of_birth', '>=', is_null($team->yearFrom) ? 0 : $team->yearFrom)->where('date_of_birth', '<=', $team->yearUntil)->get();
+        if (is_null($team->yearFrom)) {
+            $od = 0;
+        } else {
+            $od = $team->yearFrom;
+        }
+        $add_players = $this->playerRepo->all()->where('team_id', null)->get();
         $positions = $this->positionRepo->all()->get();
+        $workflow = Workflow::get($team);
         if (is_null($team->coach_id))
              $team->coach_id = 0;
-        return view('teamEdit', ['coaches' => $users, 'team' => $team , 'players' => $players, 'selectPlayers' =>  $add_players, 'positions' => $positions]);
+        return view('teamEdit', ['coaches' => $users, 'team' => $team , 'players' => $players, 'selectPlayers' =>  $add_players, 'positions' => $positions,  'wf' => $workflow]);
     }
 
 
@@ -92,6 +102,14 @@ class HomeController extends Controller
             'yearUntil' => $data['yearUntil'],
             'coach_id' => $data['coach_id']
         ]);
+        if ($data['role'] == 1) {
+            $team->workflow_apply('create_accept');
+            $team->save();
+            }
+            if ($data['role'] == 2) {
+                $team->workflow_apply('to_review');
+                $team->save();
+                }
         return redirect('teams');
     }
 
@@ -111,9 +129,26 @@ class HomeController extends Controller
             'yearUntil' => $data['yearUntil'],
             'coach_id' => $data['coach_id']
         ], [$id]);
-
+       if ($data['role'] == 1) {
+        $team->workflow_apply('to_review');
+        $team->save();
+        }
+        if ($data['role'] == 2) {
+            $team->workflow_apply('accept');
+            $team->save();
+            }
+         if ($data['role'] == 3) {
+                $team->workflow_apply('reject');
+                $team->save();
+                }
+        if ($data['role'] == 4) {
+                    $team->workflow_apply('review_again');
+                    $team->save();
+                    }
         return redirect('teams');
     }
+
+
 
        /**
      * Delete method for deleting team
@@ -122,14 +157,24 @@ class HomeController extends Controller
      */
     public function teamDelete($id)
     {
+        $players = $this->playerRepo->all()->where('team_id', $id)->get();
+        foreach ($players as $player) {
+            $player->team_id = null;
+            $player->save();
+        }
         $data = $this->teamRepo->delete($id);
         return redirect('teams');
     }
 
     public function add($id, Request $request)
-    {
+    { 
       $data = $request;
+      $team = $this->teamRepo->show($id);
       $player = $this->playerRepo->show($data['player_id']);
+      $year = Carbon::parse($player->date_of_birth)->year;
+      if (TeamLogic::validatorAddPlayer($team->yearFrom,$team->yearUntil, $year)) {
+        return redirect('teams/' . $id)->with('yearError', 'Greška');
+      }
       $player->team_id = $id;
       $player->save();
       return redirect('teams/' . $id);
@@ -176,6 +221,7 @@ class HomeController extends Controller
         }
         return redirect('teams/' . $newId);
     }
+
 
 
 }

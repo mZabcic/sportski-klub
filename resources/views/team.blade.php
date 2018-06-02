@@ -11,9 +11,14 @@
            </div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('createTeam') }}">
+                    <form method="POST" action="{{ route('createTeam') }}" id="create">
                         @csrf
 
+                        @if (Auth::user()->board())
+                          <input hidden id="role" name="role" value="1">
+                        @else
+                          <input hidden id="role" name="role" value="0">
+                        @endif
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Ime') }}</label>
 
@@ -29,7 +34,7 @@
                         </div>
                         
                         <div class="form-group row">
-                            <label for="yearFrom" class="col-md-4 col-form-label text-md-right">{{ __('Godina od') }}</label>
+                            <label for="yearFrom" class="col-md-4 col-form-label text-md-right">{{ __('Godina od') }} <span style="font-size: 11px;">(Opcionalno)</span></label>
 
                             <div class="col-md-6">
                                 <input id="yearFrom" type="text" class="form-control{{ $errors->has('yearFrom') ? ' is-invalid' : '' }}" name="yearFrom" value="{{ old('yearFrom') }}"  autofocus>
@@ -80,10 +85,19 @@
                             </div>
                         </div>
                         <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
+                            <div class=" offset-md-4">
                                 <button type="submit" class="button-success pure-button">
-                                    {{ __('Kreiraj') }}
+                                @if (Auth::user()->board())
+                                    {{ __('Kreiraj i odobri') }}
+                                @else 
+                                    {{ __('Kreiraj nacrt ekipe') }} 
+                                @endif
                                 </button>
+                                @if (Auth::user()->coach())
+                                <button type="button" id="create_start" class="button-success pure-button">
+                                {{ __('Kreiraj i pokreni odobravanje') }}
+                                </button>
+                                @endif;
                             </div>
                         </div>
                     </form>

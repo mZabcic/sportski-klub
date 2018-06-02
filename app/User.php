@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Kyslik\ColumnSortable\Sortable;
+use App\Role;
 
 class User extends Authenticatable
 {
@@ -29,4 +30,23 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function coach() {
+        if ($this->role_id == 3) 
+          return true;
+        else 
+          return false;
+    }
+
+    public function board() {
+        if ($this->role_id == 2 || $this->role_id == 1) 
+          return true;
+        else 
+          return false;
+    }
+
+    public function role() {
+        $role = Role::where('id', $this->role_id)->firstOrFail();
+        return $role->name;
+    }
 }

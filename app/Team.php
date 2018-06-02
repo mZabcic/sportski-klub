@@ -4,15 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
+use Brexis\LaravelWorkflow\Traits\WorkflowTrait;
 
 class Team extends Model
 {
-    use Sortable;
+    use Sortable, WorkflowTrait;
     protected $fillable = [
         'name',
         'yearFrom',
         'yearUntil',
-        'coach_id'
+        'coach_id',
+        'currentStatus'
     ];
 
     protected $table = 'teams';
@@ -22,7 +24,8 @@ class Team extends Model
     'created_at',
     'updated_at',
     'yearFrom',
-    'yearUntil'
+    'yearUntil',
+    'currentStatus'
 ];
     
 

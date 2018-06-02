@@ -160,6 +160,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
+        Brexis\LaravelWorkflow\WorkflowServiceProvider::class,
+        
 
     ],
 
@@ -209,6 +211,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Workflow' => Brexis\LaravelWorkflow\Facades\WorkflowFacade::class,
 
     ],
 
