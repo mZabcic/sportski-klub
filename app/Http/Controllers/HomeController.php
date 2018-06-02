@@ -110,7 +110,7 @@ class HomeController extends Controller
                 $team->workflow_apply('to_review');
                 $team->save();
                 }
-        return redirect('teams');
+       return redirect('teams');
     }
 
       /**

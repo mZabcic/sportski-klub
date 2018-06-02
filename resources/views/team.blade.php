@@ -97,7 +97,7 @@
                                 <button type="button" id="create_start" class="button-success pure-button">
                                 {{ __('Kreiraj i pokreni odobravanje') }}
                                 </button>
-                                @endif;
+                                @endif
                             </div>
                         </div>
                     </form>

@@ -4,6 +4,7 @@ namespace App\BusinessLogic;
 use App\Rules\RequiredSelectList;
 use App\Rules\Year;
 use App\Rules\Category;
+use App\Rules\CanEdit;
 use \Validator;
 use Illuminate\Validation\Rule;
 
@@ -24,7 +25,8 @@ class TeamLogic
                 'name' => ['required', Rule::unique('teams')->ignore($id), 'max:255'],
                 'coach_id' => [new RequiredSelectList],
                 'yearFrom' => ['numeric', 'nullable', new Year],
-                'yearUntil' => ['required', 'numeric', new Year]
+                'yearUntil' => ['required', 'numeric', new Year],
+                'currentStatus' => [new CanEdit]
         ];
         
         

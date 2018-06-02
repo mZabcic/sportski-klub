@@ -48,9 +48,9 @@
                                 @if ((Auth::user()->board() && $team->currentStatus != 'odobren') || (Auth::user()->coach() && $team->currentStatus == 'nacrt'))
                                     <a href="/teams/{{ $team->id }}" class="button-success pure-button">Uredi</a>
                                 @else
-                                    <a href="/teams/{{ $team->id }}" class="button-success pure-button">Igrači</a>
+                                    <a href="/teams/{{ $team->id }}" style="margin-right: 2px;" class="button-success pure-button">Igrači</a>
                                 @endif
-                                @if ((Auth::user()->board() && $team->currentStatus != 'odobren') || (Auth::user()->coach() && $team->currentStatus == 'nacrt'))
+                                @if ((Auth::user()->board()) || (Auth::user()->coach() && $team->currentStatus == 'nacrt'))
                                 <form action="{{ route('teamDelete', ['id' => $team->id]) }}" method="post">
                                 @csrf
                                  <input type="hidden" name="_method" value="delete" />

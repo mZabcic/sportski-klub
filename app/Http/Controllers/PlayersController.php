@@ -49,7 +49,7 @@ class PlayersController extends Controller
      */
     public function createView()
     {
-        $teams = $this->teamRepo->all()->get();
+        $teams = $this->teamRepo->all()->where('currentStatus', 'odobren')->get();
         $positions = $this->positionRepo->all()->get();
         return view('players.create', ['teams' => $teams, 'positions' => $positions]);
     }
